@@ -17,15 +17,57 @@ const userSchema = new mongoose.Schema({
   photo: String,
   password: {
     type: String,
-    required: true,
+    required: [true, 'Password is required'],
+    select: false,
     validate: {
-      validator: function (value) {
-        // Check if the password is strong
-        return validator.isStrongPassword(value);
+      validator: (value) => {
+        const options = {
+          minLength: 8,
+          minLowercase: 1,
+          minUppercase: 1,
+          minNumbers: 1,
+          minSymbols: 1,
+          returnScore: false,
+        };
+
+        const isStrongPassword = validator.isStrongPassword(value, options);
+
+        if (!isStrongPassword) {
+          const errors = [];
+
+          if (value.length < options.minLength) {
+            errors.push('Password must be at least 8 characters long.');
+          }
+
+          if (!/[a-z]/.test(value)) {
+            errors.push('Password must include at least one lowercase letter.');
+          }
+
+          if (!/[A-Z]/.test(value)) {
+            errors.push('Password must include at least one uppercase letter.');
+          }
+
+          if (!/\d/.test(value)) {
+            errors.push('Password must include at least one digit.');
+          }
+
+          if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+            errors.push(
+              'Password must include at least one special character.'
+            );
+          }
+
+          if (errors.length > 0) {
+            throw new Error(errors.join(' '));
+          }
+        }
+
+        return true;
       },
       message: 'Password must be strong and secure',
     },
   },
+
   confirmPassword: {
     type: String,
     required: true,
@@ -47,9 +89,16 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, 12);
 
   // Delete passwordConfirm field
-  this.passwordConfirm = undefined;
+  this.confirmPassword = undefined;
   next();
 });
+
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 const User = mongoose.model('User', userSchema);
 

@@ -83,7 +83,7 @@ exports.updateTour = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteTour = catchAsync(async (req, res) => {
+exports.deleteTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findByIdAndDelete(req.params.id);
 
   if (!tour) {

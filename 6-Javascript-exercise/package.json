@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon 1.basics.js"
+    "start": "nodemon 3.constructure-function.js"
   },
   "keywords": [],
   "author": "",

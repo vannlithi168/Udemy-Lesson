@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon factory-function.js"
+    "start": "nodemon 1.basics.js"
   },
   "keywords": [],
   "author": "",

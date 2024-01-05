@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "name": "Bruce Kling",
+      "id": 1
+    },
+    {
+      "name": "Miss Marie Torphy",
+      "id": 5
+    },
+    {
+      "name": "Marie Keeling",
+      "id": 6
+    },
+    {
+      "name": "Courtney Bechtelar",
+      "id": 7
+    },
+    {
+      "name": "Allison Wisoky",
+      "id": 9
+    }
+  ],
+  "albums": [],
+  "photos": []
+}
